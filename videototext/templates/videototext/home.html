@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VideoToText</title>
+<style>
+body {
+  background-image: url("fondopan.png");
+  background-size: cover;
+  background-position: center;
+  color: #333;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 50px;
+  
+}
+.form-container {
+  border: 2px dashed #ff9900;
+  padding: 20px;
+  margin-top: 50px;
+}
+.form-container h2 {
+  color: #ff9900;
+}
+label {
+  color: #333;
+}
+button {
+  background-color: #ff9900;
+  color: #fff;
+}
+button:hover {
+  background-color: #ff6600;
+}
+input[type="file"] {
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff9900;
+  color: #fff;
+}
+input[type="file"]:hover {
+  background-color: #ff6600;
+}
+#header-carousel {
+  position:center;
+}
+#header-carousel img {
+  position:center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="header-carousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+             <div class="p-3" style="max-width: 900px;">
+                  <h1>VideoToText</h1>
+                   <div class="form-container">
+                    {% csrf_token %}
+                     <form id="transcription-form" method="POST" enctype="multipart/form-data">
+                      <h2>Arrastre aquí el contenido</h2>
+                      <input type="file" id="file-input" name="file" accept="audio/*,video/*">
+                       <label for="file-input" style="cursor: pointer;">Arrastre aquí el contenido</label>
+                        <br>
+                        <input type="submit" value="Transcribir">
+                       </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contact-info">
+  <h2>Información de contacto</h2>
+  <p>Teléfono: 123-456-7890</p>
+  <p>Email: din@uci.com</p>
+  <p>Dirección: Carretera San Antonio de los Baños Km 2½, Rpto. Torrens, La Habana</p>
+</div>
+</body>
+</html>
