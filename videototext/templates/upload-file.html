@@ -13,7 +13,7 @@
 
 {% if uploaded_file_url %}
     <p>Archivo subido en: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-{% else %}
+{% elif not uploaded_file_url and request.method != 'GET' %}
     <p style="color: red">Algo salió mal, intentalo otra vez.</p>
 {% endif %}
 
