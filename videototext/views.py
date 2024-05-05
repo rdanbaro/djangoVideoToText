@@ -1,26 +1,26 @@
-from django.shortcuts import render, redirect
-from .forms import ArchivoForm
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render
+
+from videototext.models import Archivo
 
 
-def response_form(request, form):
-    return render(request, 'videototext/response_form.html', {'form': form})
+def upload_file(request):
+    if request.method == "POST" and request.FILES['file']:
 
-def cargar_archivo(request):
-    if request.method == 'POST':
-        form = ArchivoForm(request.POST, request.FILES)
-        print('hola')
-        if form.is_valid():
-            form.save()
-            #return redirect('response_form/', form=form)
-            #import whisper
+        # guardando en el file system
+        file = request.FILES['file']
+        fs = FileSystemStorage()
+        filename = fs.save(file.name, file)
+        uploaded_file_url = fs.url(filename)
 
-            #def audio_a_texto(ruta):
-             #   model = whisper.load_model("base")
-            #    result = model.transcribe(ruta)
+        # guardando en la base de datos
+        archivo_inst = Archivo()
+        archivo_inst.nombre = file.name
+        archivo_inst.archivo = uploaded_file_url
+        archivo_inst.save()
 
-           # print(result["text"])
-            print('hola',form)
-            
-    else:
-        form = ArchivoForm()
-    #return redirect('response_form/', form=form)
+        return render(request, 'upload-file.html', {
+            'uploaded_file_url': uploaded_file_url,
+        })
+
+    return render(request, 'upload-file.html')
