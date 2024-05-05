@@ -5,3 +5,4 @@ class ArchivoForm(forms.ModelForm):
     class Meta:
         model = Archivo
         fields = ('nombre','archivo')
+        
