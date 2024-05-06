@@ -1,5 +1,7 @@
-<from method="POST" enctype="multipart/form-data">
+<from action="" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Subir archivo</button>
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Subir archivo">
 </from>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Persona</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file">
+    <button type="submit">Upload</button>
+</form>
+
+{% if uploaded_file_url %}
+    <p>Archivo subido en: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+{% elif not uploaded_file_url and request.method != 'GET' %}
+    <p style="color: red">Algo salió mal, intentalo otra vez.</p>
+{% endif %}
+
+</body>
+</html>

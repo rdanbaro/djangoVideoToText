@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import cargar_archivo, response_form
+
+from .views import upload_file
 
 urlpatterns = [
-    path('videototext/', cargar_archivo,name="index"),
-    path('response_form/<slug:form>/', response_form ,name="response_form"),
+    path('', upload_file, name="upload-file"),
 ]
