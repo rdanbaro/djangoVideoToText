@@ -18,7 +18,14 @@ def upload_file(request):
         archivo_inst.nombre = file.name
         archivo_inst.archivo = uploaded_file_url
         archivo_inst.save()
-
+        
+        import whisper
+        
+        model = whisper.load_model("base")
+        result = model.transcribe(f'/home/gresuto/Ebe VideoToText/djangoVideoToText/{uploaded_file_url}')
+        
+        print(uploaded_file_url)
+        print(result["text"])
         return render(request, 'upload-file.html', {
             'uploaded_file_url': uploaded_file_url,
         })
