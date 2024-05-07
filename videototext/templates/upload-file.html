@@ -7,29 +7,36 @@
     <link rel="stylesheet" href="{% static '/styles/common.css' %}">
     <link rel="stylesheet" href="{% static 'styles/videototext/videototext.css' %}">
 </head>
-<body>
+<body style="background-image: url('{% static 'fondo.jpg' %}')">
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="form">
     {% csrf_token %}
-    <input type="file" name="file">
-    <button type="submit">Upload</button>
+    <label for="file" class="input-label">
+        <p>Arrastre o suba un archivo</p>
+        <img src="{% static '/assets/videototext/icons8-upload-80.png' %}" alt="upload-icon" class="upload-icon">
+    </label>
+    <input required class="input-file" type="file" name="file" accept="audio/*" id="file">
+    <button type="submit" class="button-submit">Upload</button>
 </form>
 
 {% if uploaded_file_url %}
-    <p>Archivo subido en: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+        <p>Archivo subido en: <a href="{{ uploaded_file_url }}" target="_blank">{{ uploaded_file_name }}</a></p>
+    <audio controls>
+        <source src="{{ uploaded_file_url }}" type="audio/*">
+    </audio>
 {% elif not uploaded_file_url and request.method != 'GET' %}
     <p style="color: red">Algo salió mal, intentalo otra vez.</p>
 {% endif %}
 
-{% if transcription %}
-
-    <p>{{ transcription }}</p>
-
-{% elif not transcription and request.method != 'GET' %}
-
-    <p style="color: red">Algo salió mal, intentalo otra vez.</p>
-
-{% endif %}
+{#{% if transcription %}#}
+{##}
+{#    <p>{{ transcription }}</p>#}
+{##}
+{#{% elif not transcription and request.method != 'GET' %}#}
+{##}
+{#    <p style="color: red">Algo salió mal, intentalo otra vez.</p>#}
+{##}
+{#{% endif %}#}
 
 </body>
 </html>

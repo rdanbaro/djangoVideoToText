@@ -3,4 +3,66 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: auto;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.form {
+    width: 250px;
+    max-width: 800px;
+    background-color: var(--off-white);
+    border: 3px dashed var(--primary);
+    padding: 32px 22px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.input-label {
+    font-family: var(--font-family);
+    font-weight: 600;
+
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.input-file {
+    display: none;
+}
+
+.button-submit {
+    width: 100%;
+    font-family: var(--font-family);
+    border: none;
+    border-radius: 5px;
+    height: auto;
+    min-height: 28px;
+    padding: 8px;
+    background-color: #1a9af7;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 900;
+    transition: all 200ms ease-in-out;
+}
+
+.button-submit:hover {
+    opacity: 0.8;
+}
+
+.upload-icon {
+    width: 62px;
+    height: 62px;
 }
