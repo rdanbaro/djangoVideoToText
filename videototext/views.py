@@ -26,10 +26,9 @@ def upload_file(request):
         # result = model.transcribe(f'/home/gresuto/Ebe VideoToText/djangoVideoToText/{uploaded_file_url}')
         result = model.transcribe(settings.BASE_DIR / uploaded_file_url)
 
-        print(uploaded_file_url)
-        print(result["text"])
         return render(request, 'upload-file.html', {
             'uploaded_file_url': uploaded_file_url,
+            'transcription': result["text"],
         })
 
     return render(request, 'upload-file.html')

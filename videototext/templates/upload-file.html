@@ -17,5 +17,15 @@
     <p style="color: red">Algo salió mal, intentalo otra vez.</p>
 {% endif %}
 
+{% if transcription %}
+
+    <p>{{ transcription }}</p>
+
+{% elif not transcription and request.method != 'GET' %}
+
+    <p style="color: red">Algo salió mal, intentalo otra vez.</p>
+
+{% endif %}
+
 </body>
 </html>
