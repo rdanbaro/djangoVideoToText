@@ -1,7 +1,9 @@
+import whisper
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
-
 from videototext.models import Archivo
+
+from django.conf import settings
 
 
 def upload_file(request):
@@ -18,12 +20,12 @@ def upload_file(request):
         archivo_inst.nombre = file.name
         archivo_inst.archivo = uploaded_file_url
         archivo_inst.save()
-        
-        import whisper
-        
+
+        # transcribiendo el archivo
         model = whisper.load_model("base")
-        result = model.transcribe(f'/home/gresuto/Ebe VideoToText/djangoVideoToText/{uploaded_file_url}')
-        
+        # result = model.transcribe(f'/home/gresuto/Ebe VideoToText/djangoVideoToText/{uploaded_file_url}')
+        result = model.transcribe(settings.BASE_DIR / uploaded_file_url)
+
         print(uploaded_file_url)
         print(result["text"])
         return render(request, 'upload-file.html', {

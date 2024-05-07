@@ -8,6 +8,3 @@ class Archivo(models.Model):
     archivo = models.FileField(upload_to='videototext/')
 
 
-class Persona(models.Model):
-    name = models.CharField(max_length=255)
-    img = models.FileField(upload_to='videototext/')
