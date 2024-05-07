@@ -1,4 +1,4 @@
-import whisper
+from .IA_services import transcripcion
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 from videototext.models import Archivo
@@ -21,12 +21,11 @@ def upload_file(request):
         archivo_inst.archivo = uploaded_file_url
         archivo_inst.save()
 
-        # transcribiendo el archivo
-        model = whisper.load_model("base")
-        result = model.transcribe(f'{settings.BASE_DIR}{uploaded_file_url}')
+        
 
         return render(request, 'upload-file.html', {
-            'uploaded_file_url': uploaded_file_url,
+            'uploaded_file_url': uploaded_file_url, 
+            'transcription': transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
         })
 
     return render(request, 'upload-file.html')
