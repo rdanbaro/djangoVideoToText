@@ -12,39 +12,43 @@
 </head>
 <body style="background-image: url('{% static 'fondo.jpg' %}')">
 
-<form method="post" enctype="multipart/form-data" class="form">
-    {% csrf_token %}
-    <label for="file" class="input-label">
-        {% if uploaded_file_name %}
-            <p>{{ uploaded_file_name }}</p>
-            <img src="{% static '/assets/videototext/icons8-music-50.png' %}" alt="upload-icon" class="upload-icon">
-        {% else %}
-            <p>Arrastre o suba un archivo</p>
-            <img src="{% static '/assets/videototext/icons8-upload-80.png' %}" alt="upload-icon" class="upload-icon">
-        {% endif %}
-    </label>
-    <input required class="input-file" type="file" name="file" id="file" accept="audio/*">
-    <button type="submit" class="button-submit">Upload</button>
-</form>
+<section class="upload-file-container">
+    <form method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        <label for="file" class="input-label">
+            {% if uploaded_file_name %}
+                <p>{{ uploaded_file_name }}</p>
+                <img src="{% static '/assets/videototext/icons8-music-50.png' %}" alt="upload-icon" class="upload-icon">
+            {% else %}
+                <p>Arrastre o suba un archivo</p>
+                <img src="{% static '/assets/videototext/icons8-upload-80.png' %}" alt="upload-icon"
+                     class="upload-icon">
+            {% endif %}
+        </label>
+        <input required class="input-file" type="file" name="file" id="file" accept="audio/*">
+        <button type="submit" class="button-submit">Upload</button>
+    </form>
 
-{% if uploaded_file_url %}
+    {% if uploaded_file_url %}
 
-    <p class="download-link--container">Download here: <a href="{{ uploaded_file_url }}" target="_blank">{{ uploaded_file_name }}</a></p>
-    <audio controls src="{{ uploaded_file_url }}" title="{{ uploaded_file_name }}"></audio>
+        <audio controls src="{{ uploaded_file_url }}" title="{{ uploaded_file_name }}"></audio>
 
-{% elif not uploaded_file_url and request.method != 'GET' %}
-    <p style="color: red">Algo salió mal, intentalo otra vez.</p>
-{% endif %}
+    {% elif not uploaded_file_url and request.method != 'GET' %}
+        <p style="color: red">Algo salió mal, intentalo otra vez.</p>
+    {% endif %}
+</section>
 
-{#{% if transcription %}#}
+<section class="transcription--container {% if not uploaded_file_url %}hidden{% endif %}">
+    {% if transcription %}
 
-    <p>transcription </p>
+        <p>{{ transcription }}</p>
 
-{#{% elif not transcription and request.method != 'GET' %}#}
+    {% elif not transcription and request.method != 'GET' %}
 
-{#    <p style="color: red">Algo salió mal, intentalo otra vez.</p>#}
+        <p>Algo salió mal, intentalo otra vez.</p>
 
-{#{% endif %}#}
+    {% endif %}
+</section>
 
 </body>
 </html>

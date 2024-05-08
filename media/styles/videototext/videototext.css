@@ -1,12 +1,23 @@
 body {
     display: flex;
-    flex-wrap: nowrap;
+    flex: 1 1;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     height: auto;
     min-height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
+    gap: 18px;
+    padding: 8px;
+}
+
+.upload-file-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 18px;
 }
 
@@ -74,4 +85,52 @@ body {
     font-family: var(--font-family);
     font-weight: 600;
     color: var(--secondary);
+}
+
+
+.transcription--container {
+
+    padding: 12px;
+
+    text-align: center;
+    width: 30%;
+    min-width: 250px;
+    max-height: 40vh;
+
+    border-radius: 6px;
+    background-color: var(--off-black);
+    color: var(--off-white);
+    box-shadow: 4px 4px 8px 4px var(--off-black);
+    opacity: 1;
+    transition: all 200ms ease-in;
+}
+
+.transcription--container p {
+    font-family: var(--font-family);
+    font-weight: 600;
+    line-height: 1.5;
+
+    overflow-y: scroll;
+}
+
+*::-webkit-scrollbar {
+    width: 14px;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: var(--off-white);
+    border: 6px solid var(--off-black);
+    border-radius: 6px;
+    padding: 4px;
+    /*background: orange; !* Color del área de seguimiento *!*/
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--secondary); /* Color del thumb (deslizador) */
+    border-radius: 20px; /* Redondez del thumb */
+    border: 1px solid var(--off-black); /* Crea un borde alrededor del thumb */
+}
+
+.hidden {
+    display: none;
 }
