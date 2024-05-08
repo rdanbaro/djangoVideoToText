@@ -104,6 +104,7 @@ body {
     color: var(--off-white);
     box-shadow: 4px 4px 8px 4px var(--off-black);
     opacity: 1;
+    overflow-y: scroll;
     transition: all 200ms ease-in;
 }
 
@@ -111,15 +112,13 @@ body {
     font-family: var(--font-family);
     font-weight: 600;
     line-height: 1.5;
-
-    overflow-y: scroll;
 }
 
-*::-webkit-scrollbar {
+.transcription--container::-webkit-scrollbar {
     width: 14px;
 }
 
-*::-webkit-scrollbar-track {
+.transcription--container::-webkit-scrollbar-track {
     background-color: var(--off-white);
     border: 6px solid var(--off-black);
     border-radius: 6px;
@@ -127,7 +126,7 @@ body {
     /*background: orange; !* Color del área de seguimiento *!*/
 }
 
-*::-webkit-scrollbar-thumb {
+.transcription--container::-webkit-scrollbar-thumb {
     background-color: var(--secondary); /* Color del thumb (deslizador) */
     border-radius: 20px; /* Redondez del thumb */
     border: 1px solid var(--off-black); /* Crea un borde alrededor del thumb */
