@@ -3,7 +3,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>New Persona</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Transcription App</title>
     <link rel="stylesheet" href="{% static '/styles/common.css' %}">
     <link rel="stylesheet" href="{% static 'styles/videototext/videototext.css' %}">
 </head>
@@ -12,30 +15,35 @@
 <form method="post" enctype="multipart/form-data" class="form">
     {% csrf_token %}
     <label for="file" class="input-label">
-        <p>Arrastre o suba un archivo</p>
-        <img src="{% static '/assets/videototext/icons8-upload-80.png' %}" alt="upload-icon" class="upload-icon">
+        {% if uploaded_file_name %}
+            <p>{{ uploaded_file_name }}</p>
+            <img src="{% static '/assets/videototext/icons8-music-50.png' %}" alt="upload-icon" class="upload-icon">
+        {% else %}
+            <p>Arrastre o suba un archivo</p>
+            <img src="{% static '/assets/videototext/icons8-upload-80.png' %}" alt="upload-icon" class="upload-icon">
+        {% endif %}
     </label>
-    <input required class="input-file" type="file" name="file" accept="audio/*" id="file">
+    <input required class="input-file" type="file" name="file" id="file" accept="audio/*">
     <button type="submit" class="button-submit">Upload</button>
 </form>
 
 {% if uploaded_file_url %}
-        <p>Archivo subido en: <a href="{{ uploaded_file_url }}" target="_blank">{{ uploaded_file_name }}</a></p>
-    <audio controls>
-        <source src="{{ uploaded_file_url }}" type="audio/*">
-    </audio>
+
+    <p class="download-link--container">Download here: <a href="{{ uploaded_file_url }}" target="_blank">{{ uploaded_file_name }}</a></p>
+    <audio controls src="{{ uploaded_file_url }}" title="{{ uploaded_file_name }}"></audio>
+
 {% elif not uploaded_file_url and request.method != 'GET' %}
     <p style="color: red">Algo salió mal, intentalo otra vez.</p>
 {% endif %}
 
 {#{% if transcription %}#}
-{##}
-{#    <p>{{ transcription }}</p>#}
-{##}
+
+    <p>transcription </p>
+
 {#{% elif not transcription and request.method != 'GET' %}#}
-{##}
+
 {#    <p style="color: red">Algo salió mal, intentalo otra vez.</p>#}
-{##}
+
 {#{% endif %}#}
 
 </body>

@@ -1,17 +1,17 @@
 body {
     display: flex;
-    flex-direction: column;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
     height: auto;
     min-height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
+    gap: 18px;
 }
 
 .form {
-    width: 250px;
-    max-width: 800px;
+    width: auto;
     background-color: var(--off-white);
     border: 3px dashed var(--primary);
     padding: 32px 22px;
@@ -37,6 +37,9 @@ body {
     align-items: center;
 
     gap: 8px;
+
+    cursor: pointer;
+    color: var(--secondary);
 }
 
 .input-file {
@@ -65,4 +68,10 @@ body {
 .upload-icon {
     width: 62px;
     height: 62px;
+}
+
+.download-link--container {
+    font-family: var(--font-family);
+    font-weight: 600;
+    color: var(--secondary);
 }
