@@ -1,3 +1,5 @@
+
+
 import whisper
 
 def transcripcion(url_file):
