@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{% static 'styles/videototext/videototext.css' %}">
 </head>
 <body style="background-image: url('{% static 'fondo.jpg' %}')">
-
+{{ data }}
 <section class="upload-file-container">
 
     <form method="post" enctype="multipart/form-data" class="form">
@@ -42,7 +42,8 @@
 
     {% if uploaded_file_url %}
 
-        <audio controls src="{{ uploaded_file_url }}" title="{{ uploaded_file_name }}"></audio>
+        <audio controls src="{{ uploaded_file_url }}" title="{{ uploaded_file_name }}" id="reproductor"></audio>
+        <a href="" id="download-link" class="hidden">Download here</a>
 
     {% elif not uploaded_file_url and request.method != 'GET' %}
 
@@ -65,5 +66,6 @@
 
 </section>
 
+<script defer src="{% static 'videototext/js/play_media_file.js' %}"></script>
 </body>
 </html>

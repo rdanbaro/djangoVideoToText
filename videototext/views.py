@@ -1,34 +1,44 @@
 # from .IA_services import transcripcion
+import requests as fetch
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
-from videototext.models import Archivo
 
-from django.conf import settings
+from videototext.utils.utils import read_config
 
 
 def upload_file(request):
     if request.method == "POST" and request.FILES['file']:
-        # instancia del modelo Archivo
-        archivo_inst = Archivo()
-
-        # guardando en el file system
+        # Obteniendo la configuracion
+        host, port, api_url = read_config()
+        API = f'http://{host}:{port}'
+        transcription_api_url = f'{API}/{api_url}'
         file = request.FILES['file']
-        fs = FileSystemStorage()
-        filename = fs.save(file.name, file)
-        uploaded_file_url = fs.url(filename)
 
-        # transcribiendo el archivo
-        # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
-        # archivo_inst.transcrition = transcription
+        # consumiendo la API
+        response = fetch.post(
+            url=transcription_api_url,
+            files={
+                'file': file
+            },
 
-        # guardando en la base de datos
-        archivo_inst.nombre = file.name
-        archivo_inst.archivo = uploaded_file_url
-        archivo_inst.save()
+            headers={
+                'Content-Type': 'application/json',
+                'Content-Disposition': f'attachment;filename={file.name}'
+            }
+        )
+
+        data = response.json()
+
+        api_url_file = read_config('files')
+        archivo = fetch.get(url=f'{API}/{api_url_file}/{data["file_id"]}').json()
+
+        inStorage_file_name = archivo['archivo'].split('/')[-1]
+        # loaded_file = fetch.get(f'{API}/media/{inStorage_file_name}').content
 
         return render(request, 'upload-file.html', {
-            'uploaded_file_url': uploaded_file_url,
-            'uploaded_file_name': filename,
+            'uploaded_file_url': archivo['archivo'],
+            'uploaded_file_name': inStorage_file_name,
+            # 'file': loaded_file
             # 'transcription': transcription)
         })
 

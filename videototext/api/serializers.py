@@ -14,4 +14,5 @@ class ArchivoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Archivo
-        fields = ['archivo', 'keywords']
+        fields = '__all__'
+

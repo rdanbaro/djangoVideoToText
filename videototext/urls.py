@@ -4,9 +4,8 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework import routers
 
+from videototext.api.apiviews import KeywordsApiView, ArchivoApiView, TransciptionApiView
 from .views import upload_file
-
-from videototext.api.apiviews import KeywordsApiView,ArchivoApiView
 
 # Creando esquema de configuracion para la auto doc de swagger
 schema_view = get_schema_view(
@@ -19,7 +18,7 @@ schema_view = get_schema_view(
         license=openapi.License(name="Awesome License"),
     ),
     public=True,
-    permission_classes=(permissions.IsAuthenticated,),
+    permission_classes=(permissions.AllowAny,),
 )
 
 # Creando el router
@@ -31,6 +30,7 @@ router.register(r'keywords', KeywordsApiView)
 router.register(r'files', ArchivoApiView)
 
 urlpatterns = [
+    path('api/v1/transcription-app', TransciptionApiView.as_view(), name='transcription-app'),
     path('', upload_file, name="demo-app"),
     path('api/v1/', include(router.urls)),
     # auto documentation config
