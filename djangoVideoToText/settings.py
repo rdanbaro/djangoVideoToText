@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     # My Apps
     'rest_framework',
     'drf_yasg',
-    'rest_framework_swagger',
     'videototext',
 ]
 
