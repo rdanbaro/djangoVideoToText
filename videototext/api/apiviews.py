@@ -1,3 +1,4 @@
+from videototext import IA_services
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -51,11 +52,15 @@ class TransciptionApiView(APIView):
 
                 # transcribiendo el archivo
                 # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
-                # archivo_inst.transcrition = transcription
+                
+                
 
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
                 archivo_inst.save()
+                print('ruta:', archivo_inst.archivo.storage.url(archivo_inst.archivo.url.split('/')[-1]))
+                print('hola', 'qtal')
+                archivo_inst.transcription = transcription(archivo_inst.archivo.storage.url(archivo_inst.archivo.url.split('/')[-1]))
 
                 data = {
                     'file_id': archivo_inst.id,
