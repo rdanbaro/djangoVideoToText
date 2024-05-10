@@ -67,8 +67,7 @@
 
     {% elif not transcription and request.method != 'GET' %}
 
-{#        <p id="transcription" class="content-show">Algo salió mal con la transcripción, intentalo otra vez.</p>#}
-        <p id="transcription" class="content-show">Transcription Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, nemo unde. Deleniti, ex iure minus quaerat reiciendis saepe totam voluptatum! Dicta, eligendi, vitae? A animi id omnis quaerat sequi vitae.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium rem repellendus rerum voluptates! Aperiam culpa ea, facere harum incidunt neque optio perspiciatis quas quidem recusandae repudiandae sunt totam ullam velit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias architecto deserunt eaque, eius eos harum illo iure modi natus possimus reprehenderit sint sit tempora ullam ut vero voluptatibus voluptatum.</p>
+        <p id="transcription" class="content-show">Algo salió mal con la transcripción, intentalo otra vez.</p>
 
     {% endif %}
 
@@ -78,19 +77,23 @@
 
     {% elif not resumen and request.method != 'GET' %}
 
-{#        <p id="resumen" class="hidden">Algo salió mal con el resumen, intentalo otra vez.</p>#}
-        <p id="resumen" class="hidden">Resumen Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium rem repellendus rerum voluptates! Aperiam culpa ea, facere harum incidunt neque optio perspiciatis quas quidem recusandae repudiandae sunt totam ullam velit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias architecto deserunt eaque, eius eos harum illo iure modi natus possimus reprehenderit sint sit tempora ullam ut vero voluptatibus voluptatum.</p>
+        <p id="resumen" class="hidden">Algo salió mal con el resumen, intentalo otra vez.</p>
 
     {% endif %}
 
     {% if keywords %}
 
-        <p id="keywords" class="hidden">{{ keywords }}</p>
+        <div id="keywords" class="hidden">
+            <ul class="keywords--container">
+                {% for keyword in keywords %}
+                    <li class="keyword-tag">{{ keyword }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
     {% elif not keywords and request.method != 'GET' %}
 
-{#        <p id="keywords" class="hidden">Algo salió mal con las keywords, intentalo otra vez.</p>#}
-        <p id="keywords" class="hidden">Keywords Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium rem repellendus rerum voluptates! Aperiam culpa ea, facere harum incidunt neque optio perspiciatis quas quidem recusandae repudiandae sunt totam ullam velit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias architecto deserunt eaque, eius eos harum illo iure modi natus possimus reprehenderit sint sit tempora ullam ut vero voluptatibus voluptatum.</p>
+        <p id="keywords" class="hidden">Algo salió mal con las keywords, intentalo otra vez.</p>
 
     {% endif %}
 </section>

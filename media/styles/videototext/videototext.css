@@ -209,3 +209,27 @@ body {
 .content-show {
     transition: all 100ms ease-in-out;
 }
+
+.keywords--container {
+    display: flex;
+    flex: 1 1;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    list-style: none;
+}
+
+.keyword-tag {
+    flex-grow: 1;
+    color: var(--off-white);
+    font-family: var(--font-family);
+    font-weight: 600;
+    line-height: 1.5;
+    background-color: var(--primary);
+    width: auto;
+    min-height: 40px;
+    height: auto;
+    border-radius: 8px;
+    padding: 6px;
+}
