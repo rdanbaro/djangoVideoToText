@@ -21,6 +21,8 @@ def upload_file(request):
                 'file': file
             },
 
+        # transcribiendo el archivo y guardando en la variable transcrition
+        # archivo_inst.transcrition = transcripcion(url_definitivo)
             headers={
                 'Content-Type': 'application/json',
                 'Content-Disposition': f'attachment;filename={file.name}'
@@ -28,6 +30,11 @@ def upload_file(request):
         )
 
         data = response.json()
+
+        # if es_video(file):
+        #     print('Es un video')
+        #     clip = mp.VideoFileClip(url_definitivo)
+        #     clip.audio.write_audiofile(url_definitivo[:-4] + '.mp3')
 
         api_url_file = read_config('files')
         archivo = fetch.get(url=f'{API}/{api_url_file}/{data["file_id"]}').json()
