@@ -42,7 +42,9 @@
 
     {% if uploaded_file_url %}
 
-        <audio controls src="{{ uploaded_file_url }}" title="{{ uploaded_file_name }}" id="reproductor"></audio>
+        <audio controls title="{{ uploaded_file_name }}" id="reproductor">
+        <source src="{{ uploaded_file_url }}">
+        </audio>
         <a href="" id="download-link" class="hidden">Download here</a>
 
     {% elif not uploaded_file_url and request.method != 'GET' %}

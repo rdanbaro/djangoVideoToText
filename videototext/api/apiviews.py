@@ -1,4 +1,3 @@
-from django.core.files.storage import FileSystemStorage
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -49,9 +48,6 @@ class TransciptionApiView(APIView):
                 archivo_inst = Archivo()
 
                 file = request.FILES['file']
-                # fs = FileSystemStorage()
-                # filename = fs.save(file.name, file)
-                # uploaded_file_url = fs.url(filename)
 
                 # transcribiendo el archivo
                 # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
@@ -60,18 +56,31 @@ class TransciptionApiView(APIView):
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
                 archivo_inst.save()
-                archivo = Archivo.objects.get(archivo=archivo_inst.archivo)
 
                 data = {
-                    'file_id': archivo.id
+                    'file_id': archivo_inst.id,
+                    'file_name': archivo_inst.nombre,
+                    'file_storage_name': archivo_inst.archivo.url.split('/')[-1],
+                    'file_url': archivo_inst.archivo.url,
+                    'transcription': archivo_inst.transcription,
+                    'resumen': archivo_inst.resumen,
+                    'keywords': archivo_inst.keywords,
                 }
 
                 return Response(data=data, status=status.HTTP_200_OK)
+
             else:
+
                 return Response(data={
+
                     'error': 'No se proporcionó ningún archivo'
+
                 }, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as e:
+
             return Response(data={
+
                 'error': str(e)
+
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

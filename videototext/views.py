@@ -8,11 +8,12 @@ from videototext.utils.utils import read_config
 
 def upload_file(request):
     if request.method == "POST" and request.FILES['file']:
-
         # Obteniendo la configuracion
         host, port, api_url = read_config()
         API = f'http://{host}:{port}'
         transcription_api_url = f'{API}/{api_url}'
+
+        # obteniendo el archivo
         file = request.FILES['file']
 
         # consumiendo la API
@@ -37,16 +38,12 @@ def upload_file(request):
         # transcribiendo el archivo y guardando en la variable transcrition
         # archivo_inst.transcrition = transcripcion(url_definitivo)
 
-        api_url_file = read_config('files')
-        archivo = fetch.get(url=f'{API}/{api_url_file}/{data["file_id"]}').json()
-
-        inStorage_file_name = archivo['archivo'].split('/')[-1]
-
-        return render(request, 'upload-file.html', {
-            'uploaded_file_url': archivo['archivo'],
-            'uploaded_file_name': inStorage_file_name,
-            # 'file': loaded_file
-            # 'transcription': transcription)
+        return render(request, 'upload-file.html', context={
+            'uploaded_file_url': f'{API}{data["file_url"]}',
+            'uploaded_file_name': data['file_name'],
+            # 'transcription': data['transcription']),
+            # 'resumen': data['resumen']),
+            # 'keywords': data['keywords']),
         })
 
     return render(request, 'upload-file.html')
