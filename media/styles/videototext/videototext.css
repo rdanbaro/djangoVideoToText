@@ -88,24 +88,46 @@ body {
     font-family: var(--font-family);
     font-weight: 600;
     color: var(--secondary);
+    text-decoration: none;
 }
 
+.download-link-unsuported-format--container {
+
+    width: auto;
+    height: auto;
+    min-height: 42px;
+    padding: 12px 24px;
+    gap: 6px;
+
+    border-radius: 35px;
+    font-family: var(--font-family);
+    font-weight: bold;
+    text-align: center;
+
+    background-color: var(--off-black);
+    color: var(--off-white);
+}
+
+.download-link-unsuported-format--container.hidden {
+    display: none;
+}
 
 .transcription--container {
 
+    position: relative;
     padding: 12px;
 
+    overflow-y: scroll;
     text-align: center;
-    width: 30%;
-    min-width: 250px;
-    max-height: 40vh;
+    min-height: 350px;
+    max-height: 50vh;
+    max-width: 400px;
 
     border-radius: 6px;
     background-color: var(--off-black);
     color: var(--off-white);
     box-shadow: 4px 4px 8px 4px var(--off-black);
     opacity: 1;
-    overflow-y: scroll;
     transition: all 200ms ease-in;
 }
 
@@ -135,4 +157,55 @@ body {
 
 .hidden {
     display: none;
+}
+
+.toggle-nav-bar {
+    position: sticky;
+    top: -5%;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    background-color: var(--off-black);
+    width: 100%;
+    border-radius: 6px;
+    /* border-bottom: 6px solid var(--secondary); */
+    /* padding: 12px; */
+    display: flex;
+    gap: 12px;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+
+.button {
+    color: var(--off-white);
+    font-family: var(--font-family);
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 8px;
+    border: none;
+    background-color: var(--off-black);
+    cursor: pointer;
+    transition: all 100ms ease-in-out;
+}
+
+.button:hover {
+    border-bottom: 6px solid var(--secondary);
+}
+
+.button.active {
+    border-bottom: 6px solid var(--secondary);
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-show {
+    transition: all 100ms ease-in-out;
 }
