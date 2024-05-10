@@ -41,9 +41,10 @@ def upload_file(request):
         return render(request, 'upload-file.html', context={
             'uploaded_file_url': data['file_url'],
             'uploaded_file_name': data['file_name'],
-            # 'transcription': data['transcription']),
-            # 'resumen': data['resumen']),
-            # 'keywords': data['keywords']),
+            'uploaded_file_storage_name': data['file_storage_name'],
+            'transcription': data['transcription'],
+            'resumen': data['resumen'],
+            'keywords': data['keywords'],
         })
 
     return render(request, 'upload-file.html')

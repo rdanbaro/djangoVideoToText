@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="{% static 'styles/videototext/videototext.css' %}">
 </head>
 <body style="background-image: url('{% static 'fondo.jpg' %}')">
-
 <section class="upload-file-container">
 
     <form method="post" enctype="multipart/form-data" class="form">
@@ -43,9 +42,10 @@
     {% if uploaded_file_url %}
 
         <audio controls title="{{ uploaded_file_name }}" id="reproductor">
-        <source src="{{ uploaded_file_url }}">
+            <source src="{{ uploaded_file_url }}">
         </audio>
-        <a href="" id="download-link" class="hidden">Download here</a>
+        <p class="download-link-unsuported-format--container flex-center" id="download-link">Formato no soportado<a
+                href="{{ uploaded_file_url }}" class="download-link--container"> 🎵Download here</a></p>
 
     {% elif not uploaded_file_url and request.method != 'GET' %}
 
@@ -55,17 +55,44 @@
 </section>
 
 <section class="transcription--container {% if not uploaded_file_url %}hidden{% endif %}">
+    <div class="toggle-nav-bar">
+        <button class="button active" id="nav-button-transcription">Transcription</button>
+        <button class="button" id="nav-button-resumen">Resume</button>
+        <button class="button" id="nav-button-keywords">Keywords</button>
+    </div>
 
     {% if transcription %}
 
-        <p>{{ transcription }}</p>
+        <p id="transcription" class="content-show">{{ transcription }}</p>
 
     {% elif not transcription and request.method != 'GET' %}
 
-        <p>Algo salió mal, intentalo otra vez.</p>
+{#        <p id="transcription" class="content-show">Algo salió mal con la transcripción, intentalo otra vez.</p>#}
+        <p id="transcription" class="content-show">Transcription Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, nemo unde. Deleniti, ex iure minus quaerat reiciendis saepe totam voluptatum! Dicta, eligendi, vitae? A animi id omnis quaerat sequi vitae.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium rem repellendus rerum voluptates! Aperiam culpa ea, facere harum incidunt neque optio perspiciatis quas quidem recusandae repudiandae sunt totam ullam velit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias architecto deserunt eaque, eius eos harum illo iure modi natus possimus reprehenderit sint sit tempora ullam ut vero voluptatibus voluptatum.</p>
 
     {% endif %}
 
+    {% if resumen %}
+
+        <p id="resumen" class="hidden">{{ resumen }}</p>
+
+    {% elif not resumen and request.method != 'GET' %}
+
+{#        <p id="resumen" class="hidden">Algo salió mal con el resumen, intentalo otra vez.</p>#}
+        <p id="resumen" class="hidden">Resumen Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium rem repellendus rerum voluptates! Aperiam culpa ea, facere harum incidunt neque optio perspiciatis quas quidem recusandae repudiandae sunt totam ullam velit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias architecto deserunt eaque, eius eos harum illo iure modi natus possimus reprehenderit sint sit tempora ullam ut vero voluptatibus voluptatum.</p>
+
+    {% endif %}
+
+    {% if keywords %}
+
+        <p id="keywords" class="hidden">{{ keywords }}</p>
+
+    {% elif not keywords and request.method != 'GET' %}
+
+{#        <p id="keywords" class="hidden">Algo salió mal con las keywords, intentalo otra vez.</p>#}
+        <p id="keywords" class="hidden">Keywords Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium rem repellendus rerum voluptates! Aperiam culpa ea, facere harum incidunt neque optio perspiciatis quas quidem recusandae repudiandae sunt totam ullam velit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias architecto deserunt eaque, eius eos harum illo iure modi natus possimus reprehenderit sint sit tempora ullam ut vero voluptatibus voluptatum.</p>
+
+    {% endif %}
 </section>
 
 <script defer src="{% static 'videototext/js/play_media_file.js' %}"></script>
