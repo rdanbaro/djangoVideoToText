@@ -10,7 +10,7 @@ class KeywordsSerializer(serializers.ModelSerializer):
 
 
 class ArchivoSerializer(serializers.ModelSerializer):
-    keywords = KeywordsSerializer(many=False)
+    keywords = KeywordsSerializer(many=True)
 
     class Meta:
         model = Archivo

@@ -38,6 +38,7 @@ def upload_file(request):
         # transcribiendo el archivo y guardando en la variable transcrition
         # archivo_inst.transcrition = transcripcion(url_definitivo)
 
+
         return render(request, 'upload-file.html', context={
             'uploaded_file_url': data['file_url'],
             'uploaded_file_name': data['file_name'],

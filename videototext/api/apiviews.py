@@ -5,11 +5,12 @@ from rest_framework import viewsets
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 
 # serializadores
 from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
 # modelos
-from videototext.models import Keywords, Archivo
+from ..models import Keywords, Archivo
 
 
 class KeywordsApiView(viewsets.ModelViewSet):
@@ -38,7 +39,9 @@ class ArchivoApiView(viewsets.ModelViewSet):
         400: "Error de Solicitud"
     }
 )
-class TransciptionApiView(APIView):
+class TransciptionApiView(ListCreateAPIView):
+    serializer_class = ArchivoSerializer
+    queryset = Archivo.objects.all()
     parser_classes = (FileUploadParser,)
 
     def post(self, request, format=None):
@@ -64,8 +67,9 @@ class TransciptionApiView(APIView):
                     'file_url': archivo_inst.archivo.url,
                     'transcription': archivo_inst.transcription,
                     'resumen': archivo_inst.resumen,
-                    'keywords': archivo_inst.keywords,
+                    'keywords': list(archivo_inst.keywords.all()),
                 }
+
 
                 return Response(data=data, status=status.HTTP_200_OK)
 
