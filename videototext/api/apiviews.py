@@ -1,4 +1,4 @@
-from videototext import IA_services
+from videototext.IA_services import transcripcion
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -6,6 +6,11 @@ from rest_framework import viewsets
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.conf import settings
+from videototext.funciones_utiles import conversion
+from videototext.funciones_utiles import es_video
+#from django.core.files.storage import FileSystemStorage
+
 
 # serializadores
 from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
@@ -49,18 +54,32 @@ class TransciptionApiView(APIView):
                 archivo_inst = Archivo()
 
                 file = request.FILES['file']
-
+               
                 # transcribiendo el archivo
                 # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
                 
                 
 
+                #fs=FileSystemStorage()
+                #uploaded_file_instance = fs.save(file.name, file)
+                #uploaded_file_instance_url = fs.url(uploaded_file_instance)
+                
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
                 archivo_inst.save()
-                print('ruta:', archivo_inst.archivo.storage.url(archivo_inst.archivo.url.split('/')[-1]))
-                print('hola', 'qtal')
-                archivo_inst.transcription = transcription(archivo_inst.archivo.storage.url(archivo_inst.archivo.url.split('/')[-1]))
+
+                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
+                
+                if es_video(archivo_inst.archivo):
+                    archivo_inst.archivo = conversion(url_definitivo)
+                    #archivo_inst.save()
+                    
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                else:
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                
+                
+                
 
                 data = {
                     'file_id': archivo_inst.id,
