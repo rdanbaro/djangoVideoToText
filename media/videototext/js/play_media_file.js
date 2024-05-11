@@ -23,8 +23,6 @@ function main() {
         const previousContentShow = document.querySelector('.content-show')
         const newContentShow = document.getElementById(`${e.target.id.split('-')[2]}`)
 
-        console.log('previousContentShow: >>', previousContentShow)
-        console.log('newContentShow: >>', newContentShow)
         previousButtonActive.classList.remove('active')
         e.target.classList.add('active')
 
