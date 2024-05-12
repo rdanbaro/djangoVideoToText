@@ -1,3 +1,4 @@
+from videototext.IA_services import transcripcion
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -5,6 +6,11 @@ from rest_framework import viewsets
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.conf import settings
+from videototext.funciones_utiles import conversion
+from videototext.funciones_utiles import es_video
+from django.core.files.storage import FileSystemStorage
+from videototext.IA_services import resumen
 from rest_framework.generics import ListCreateAPIView
 
 # serializadores
@@ -14,7 +20,7 @@ from ..models import Keywords, Archivo
 
 
 class KeywordsApiView(viewsets.ModelViewSet):
-    serializer_class = KeywordsSerializer
+    serializer_class = KeywordsSerializer 
     queryset = Keywords.objects.all()
 
 
@@ -49,14 +55,33 @@ class TransciptionApiView(APIView):
                 archivo_inst = Archivo()
 
                 file = request.FILES['file']
-
+               
                 # transcribiendo el archivo
                 # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
-                # archivo_inst.transcrition = transcription
-
+                
+                
+                
+                # guardando en la base de datos
+                
+                
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
+                
+                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
                 archivo_inst.save()
+                if es_video(file):
+                    conversion(url_definitivo)
+                    #archivo_inst.save()
+                    
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                else:
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                    
+                
+                
+                archivo_inst.resumen = resumen(archivo_inst.transcription)
+                
+                
 
                 data = {
                     'file_id': archivo_inst.id,
