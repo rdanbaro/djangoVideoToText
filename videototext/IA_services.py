@@ -9,7 +9,7 @@ def transcripcion(url_file):
 
 def resumen(texto):
     
-    promt = f'de que trata el siguiente texto: {contexto} '
+    promt = f' De que trata el siguiente texto: {texto}, resume tu respuesta '
                                                                             
     resp = ollama.chat(model='phi3', messages =[
         
@@ -20,4 +20,4 @@ def resumen(texto):
         
     ])
 
-    print(resp['message']['content'])
+    return resp['message']['content']

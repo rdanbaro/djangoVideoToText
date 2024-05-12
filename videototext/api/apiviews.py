@@ -10,7 +10,7 @@ from django.conf import settings
 from videototext.funciones_utiles import conversion
 from videototext.funciones_utiles import es_video
 from django.core.files.storage import FileSystemStorage
-
+from videototext.IA_services import resumen
 
 # serializadores
 from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
@@ -68,16 +68,17 @@ class TransciptionApiView(APIView):
                 
                 url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
                 archivo_inst.save()
-                if es_video(archivo_inst.archivo):
+                if es_video(file):
                     conversion(url_definitivo)
                     #archivo_inst.save()
                     
                     archivo_inst.transcription = transcripcion(url_definitivo)
                 else:
                     archivo_inst.transcription = transcripcion(url_definitivo)
+                    
                 
                 
-            
+                archivo_inst.resumen = resumen(archivo_inst.transcription)
                 
                 
 
