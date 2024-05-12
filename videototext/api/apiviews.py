@@ -71,23 +71,23 @@ class TransciptionApiView(APIView):
                 
                 
                 url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
-                if es_video(file):
-                    conversion(url_definitivo)
-                    #archivo_inst.save()
-                    
-                    archivo_inst.transcription = transcripcion(url_definitivo)
-                else:
-                    archivo_inst.transcription = transcripcion(url_definitivo)
+                #if es_video(file):
+                #    conversion(url_definitivo)
+                #    #archivo_inst.save()
+                #    
+                #    archivo_inst.transcription = transcripcion(url_definitivo)
+                #else:
+                #    archivo_inst.transcription = transcripcion(url_definitivo)
                     
                 
-                archivo_inst.resumen = resumen(archivo_inst.transcription)
+                #archivo_inst.resumen = resumen(archivo_inst.transcription)
                 
-                keywords_names = ['hola7', 'hola6', 'hola5']
+                keywords_names = ['hola8', 'hola9', 'hola10']
                 keywords_instances = []
             
                 for name in keywords_names:
                     keyword = Keywords.objects.filter(name=name).first()
-                    print('keyword', keyword)
+                    
                     if keyword is None:
                         keyword = Keywords.objects.create(name=name)
                     keywords_instances.append(keyword)
