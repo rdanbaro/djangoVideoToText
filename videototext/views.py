@@ -27,7 +27,8 @@ def upload_file(request):
                 'Content-Disposition': f'attachment;filename={file.name}'
             }
         )
-
+        print('                   dfjdkjfkj          dkfjkdfj k     \n \n djfkdjfldHAHAAAAAA')
+        print("que me devuelve el json", response.text)
         data = response.json()
 
         # if es_video(file):

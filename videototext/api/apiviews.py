@@ -67,8 +67,10 @@ class TransciptionApiView(APIView):
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
                 
-                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
                 archivo_inst.save()
+                
+                
+                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
                 if es_video(file):
                     conversion(url_definitivo)
                     #archivo_inst.save()
@@ -78,11 +80,21 @@ class TransciptionApiView(APIView):
                     archivo_inst.transcription = transcripcion(url_definitivo)
                     
                 
-                
                 archivo_inst.resumen = resumen(archivo_inst.transcription)
                 
-                
+                keywords_names = ['hola7', 'hola6', 'hola5']
+                keywords_instances = []
+            
+                for name in keywords_names:
+                    keyword = Keywords.objects.filter(name=name).first()
+                    print('keyword', keyword)
+                    if keyword is None:
+                        keyword = Keywords.objects.create(name=name)
+                    keywords_instances.append(keyword)
+                archivo_inst.keywords.add(*keywords_instances)
+                keywords_data = [{'name': keyword.name} for keyword in archivo_inst.keywords.all()]
 
+                
                 data = {
                     'file_id': archivo_inst.id,
                     'file_name': archivo_inst.nombre,
@@ -90,7 +102,9 @@ class TransciptionApiView(APIView):
                     'file_url': archivo_inst.archivo.url,
                     'transcription': archivo_inst.transcription,
                     'resumen': archivo_inst.resumen,
-                    'keywords': list(archivo_inst.keywords.all()),
+                    #'keywords': list(archivo_inst.keywords.all()),
+                    'keywords': keywords_data,
+                    
                 }
 
                 return Response(data=data, status=status.HTTP_200_OK)
