@@ -13,6 +13,7 @@ def es_audio(archivo):
 def conversion(url):
     
     print('url:  ', url)
+    #urlPRUEBA = '/home/gresuto/Ebe_VideoToText/djangoVideoToText/media/video-input.mp4'
     clip = mp.VideoFileClip(url)
     #print('clip_var', clip)
     clip.audio.write_audiofile(url[:-4] + '.mp3')

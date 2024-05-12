@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from django.conf import settings
 from videototext.funciones_utiles import conversion
 from videototext.funciones_utiles import es_video
-#from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage
 
 
 # serializadores
@@ -19,7 +19,7 @@ from videototext.models import Keywords, Archivo
 
 
 class KeywordsApiView(viewsets.ModelViewSet):
-    serializer_class = KeywordsSerializer
+    serializer_class = KeywordsSerializer 
     queryset = Keywords.objects.all()
 
 
@@ -59,25 +59,25 @@ class TransciptionApiView(APIView):
                 # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
                 
                 
-
-                #fs=FileSystemStorage()
-                #uploaded_file_instance = fs.save(file.name, file)
-                #uploaded_file_instance_url = fs.url(uploaded_file_instance)
+                
+                # guardando en la base de datos
+                
                 
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
-                archivo_inst.save()
-
-                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
                 
+                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
+                archivo_inst.save()
                 if es_video(archivo_inst.archivo):
-                    archivo_inst.archivo = conversion(url_definitivo)
+                    conversion(url_definitivo)
                     #archivo_inst.save()
                     
                     archivo_inst.transcription = transcripcion(url_definitivo)
                 else:
                     archivo_inst.transcription = transcripcion(url_definitivo)
                 
+                
+            
                 
                 
 
