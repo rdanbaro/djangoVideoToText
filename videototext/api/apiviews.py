@@ -39,9 +39,7 @@ class ArchivoApiView(viewsets.ModelViewSet):
         400: "Error de Solicitud"
     }
 )
-class TransciptionApiView(ListCreateAPIView):
-    serializer_class = ArchivoSerializer
-    queryset = Archivo.objects.all()
+class TransciptionApiView(APIView):
     parser_classes = (FileUploadParser,)
 
     def post(self, request, format=None):
@@ -69,7 +67,6 @@ class TransciptionApiView(ListCreateAPIView):
                     'resumen': archivo_inst.resumen,
                     'keywords': list(archivo_inst.keywords.all()),
                 }
-
 
                 return Response(data=data, status=status.HTTP_200_OK)
 
