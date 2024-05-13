@@ -1,6 +1,5 @@
 # from .IA_services import transcripcion
 import requests as fetch
-from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 
 from videototext.utils.utils import read_config
@@ -17,25 +16,24 @@ def upload_file(request):
         file = request.FILES['file']
 
         # consumiendo la API
-        # response = fetch.post(
-        #     url=transcription_api_url,
-        #     files={
-        #         'file': file
-        #     },
-        #     headers={
-        #         'Content-Type': 'application/json',
-        #         'Content-Disposition': f'attachment;filename={file.name}'
-        #     }
-        # )
-        #
-        # data = response.json()
-
-        response = fetch.get(f'{API}/{read_config("files")}/19')
+        response = fetch.post(
+            url=transcription_api_url,
+            files={
+                'file': file
+            },
+            headers={
+                'Content-Type': 'application/json',
+                'Content-Disposition': f'attachment;filename={file.name}'
+            }
+        )
 
         data = response.json()
 
+        # response = fetch.get(f'{API}/{read_config("files")}/19')
+        #
+        # data = response.json()
+
         return render(request, 'upload-file.html', context={
-            # 'uploaded_file_url': data['file_url'],
             'uploaded_file_url': data['archivo'],
             'uploaded_file_name': data['nombre'],
             # 'uploaded_file_storage_name': data['file_storage_name'],

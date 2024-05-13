@@ -7,13 +7,15 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-# from videototext.IA_services import palabras_clave
-# from videototext.IA_services import resumen
-# from videototext.IA_services import transcripcion
+# IA Services
+from videototext.IA_services import palabras_clave
+from videototext.IA_services import resumen
+from videototext.IA_services import transcripcion
 # serializadores
 from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
-# from videototext.funciones_utiles import conversion
-# from videototext.funciones_utiles import es_video
+# funciones utiles
+from videototext.funciones_utiles import conversion
+from videototext.funciones_utiles import es_video
 # modelos
 from ..models import Keywords, Archivo
 
@@ -55,50 +57,57 @@ class TransciptionApiView(APIView):
 
                 file = request.FILES['file']
 
-                # transcribiendo el archivo
-                # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
-
                 # guardando en la base de datos
-
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
 
                 archivo_inst.save()
 
-                # url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
-                # if es_video(file):
-                #     conversion(url_definitivo)
-                #     #archivo_inst.save()
-                #
-                #     archivo_inst.transcription = transcripcion(url_definitivo)
-                # else:
-                #     archivo_inst.transcription = transcripcion(url_definitivo)
-                #
-                #
-                # archivo_inst.resumen = resumen(archivo_inst.transcription)
-                #
-                # keywords_names = palabras_clave(archivo_inst.transcription)
-                # keywords_instances = []
-                #
-                # for name in keywords_names:
-                #     keyword = Keywords.objects.filter(name=name).first()
-                #
-                #     if keyword is None:
-                #         keyword = Keywords.objects.create(name=name)
-                #     keywords_instances.append(keyword)
-                #
-                # archivo_inst.keywords.add(*keywords_instances)
-                # keywords_data = [{'name': keyword.name} for keyword in archivo_inst.keywords.all()]
+                # crea una url valida del fichero
+                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
+
+                # validando que sea un audio y transcribiendolo,
+                # if esVideo se convierte y luego se transcribe else se transcribe directamente
+                # start
+                if es_video(file):
+                    conversion(url_definitivo)
+
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                else:
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                # end
+
+                # resumiendo la transcripcion del archivo
+                archivo_inst.resumen = resumen(archivo_inst.transcription)
+
+                # sacando las palabras claves de la transcripcion del archivo
+                # start
+                keywords_names = palabras_clave(archivo_inst.transcription)
+
+                keywords_instances = []
+
+                # comprobando si existe la palabra clave en la base de datos sino la crea
+                for name in keywords_names:
+                    keyword = Keywords.objects.filter(name=name.capitalize()).first()
+
+                    if keyword is None:
+                        keyword = Keywords.objects.create(name=name.capitalize())
+                    keywords_instances.append(keyword)
+
+                # asignando las palabras clave al archivo
+                archivo_inst.keywords.add(*keywords_instances)
+
+                # obteniendo las palabras claves
+                keywords_data = [{'id': keyword.id, 'name': keyword.name} for keyword in archivo_inst.keywords.all()]
 
                 data = {
                     'file_id': archivo_inst.id,
-                    'file_name': archivo_inst.nombre,
+                    'nombre': archivo_inst.nombre,
                     'file_storage_name': archivo_inst.archivo.url.split('/')[-1],
-                    'file_url': archivo_inst.archivo.url,
+                    'archivo': archivo_inst.archivo.url,
                     'transcription': archivo_inst.transcription,
                     'resumen': archivo_inst.resumen,
-                    'keywords': list(archivo_inst.keywords.all()),
-
+                    'keywords': keywords_data,
                 }
 
                 return Response(data=data, status=status.HTTP_200_OK)
