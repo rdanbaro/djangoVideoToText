@@ -17,31 +17,28 @@ def upload_file(request):
         file = request.FILES['file']
 
         # consumiendo la API
-        response = fetch.post(
-            url=transcription_api_url,
-            files={
-                'file': file
-            },
-            headers={
-                'Content-Type': 'application/json',
-                'Content-Disposition': f'attachment;filename={file.name}'
-            }
-        )
-        
+        # response = fetch.post(
+        #     url=transcription_api_url,
+        #     files={
+        #         'file': file
+        #     },
+        #     headers={
+        #         'Content-Type': 'application/json',
+        #         'Content-Disposition': f'attachment;filename={file.name}'
+        #     }
+        # )
+        #
+        # data = response.json()
+
+        response = fetch.get(f'{API}/{read_config("files")}/19')
+
         data = response.json()
 
-        # if es_video(file):
-        #     print('Es un video')
-        #     clip = mp.VideoFileClip(url_definitivo)
-        #     clip.audio.write_audiofile(url_definitivo[:-4] + '.mp3')
-
-        # transcribiendo el archivo y guardando en la variable transcrition
-        # archivo_inst.transcrition = transcripcion(url_definitivo)
-
         return render(request, 'upload-file.html', context={
-            'uploaded_file_url': data['file_url'],
-            'uploaded_file_name': data['file_name'],
-            'uploaded_file_storage_name': data['file_storage_name'],
+            # 'uploaded_file_url': data['file_url'],
+            'uploaded_file_url': data['archivo'],
+            'uploaded_file_name': data['nombre'],
+            # 'uploaded_file_storage_name': data['file_storage_name'],
             'transcription': data['transcription'],
             'resumen': data['resumen'],
             'keywords': data['keywords'],

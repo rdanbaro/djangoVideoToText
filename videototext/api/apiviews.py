@@ -1,4 +1,4 @@
-from videototext.IA_services import transcripcion
+from django.conf import settings
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -6,23 +6,20 @@ from rest_framework import viewsets
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.conf import settings
-from videototext.IA_services import palabras_clave
-from videototext.funciones_utiles import conversion
-from videototext.funciones_utiles import es_video
-from django.core.files.storage import FileSystemStorage
-from videototext.IA_services import resumen
-from rest_framework.generics import ListCreateAPIView
 
-
+# from videototext.IA_services import palabras_clave
+# from videototext.IA_services import resumen
+# from videototext.IA_services import transcripcion
 # serializadores
 from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
+# from videototext.funciones_utiles import conversion
+# from videototext.funciones_utiles import es_video
 # modelos
 from ..models import Keywords, Archivo
 
 
 class KeywordsApiView(viewsets.ModelViewSet):
-    serializer_class = KeywordsSerializer 
+    serializer_class = KeywordsSerializer
     queryset = Keywords.objects.all()
 
 
@@ -57,46 +54,42 @@ class TransciptionApiView(APIView):
                 archivo_inst = Archivo()
 
                 file = request.FILES['file']
-               
+
                 # transcribiendo el archivo
                 # transcription = transcripcion(f'{settings.BASE_DIR}{uploaded_file_url}')
-                
-                
-                
+
                 # guardando en la base de datos
-                
-                
+
                 archivo_inst.nombre = file.name
                 archivo_inst.archivo = file
-                
-                archivo_inst.save()
-                
-                
-                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
-                if es_video(file):
-                    conversion(url_definitivo)
-                    #archivo_inst.save()
-                    
-                    archivo_inst.transcription = transcripcion(url_definitivo)
-                else:
-                    archivo_inst.transcription = transcripcion(url_definitivo)
-                   
-            
-                archivo_inst.resumen = resumen(archivo_inst.transcription)
-                
-                keywords_names = palabras_clave(archivo_inst.transcription)
-                keywords_instances = []
-            
-                for name in keywords_names:
-                    keyword = Keywords.objects.filter(name=name).first()
-                    
-                    if keyword is None:
-                        keyword = Keywords.objects.create(name=name)
-                    keywords_instances.append(keyword)
-                archivo_inst.keywords.add(*keywords_instances)
-                keywords_data = [{'name': keyword.name} for keyword in archivo_inst.keywords.all()]
 
-                
+                archivo_inst.save()
+
+                # url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
+                # if es_video(file):
+                #     conversion(url_definitivo)
+                #     #archivo_inst.save()
+                #
+                #     archivo_inst.transcription = transcripcion(url_definitivo)
+                # else:
+                #     archivo_inst.transcription = transcripcion(url_definitivo)
+                #
+                #
+                # archivo_inst.resumen = resumen(archivo_inst.transcription)
+                #
+                # keywords_names = palabras_clave(archivo_inst.transcription)
+                # keywords_instances = []
+                #
+                # for name in keywords_names:
+                #     keyword = Keywords.objects.filter(name=name).first()
+                #
+                #     if keyword is None:
+                #         keyword = Keywords.objects.create(name=name)
+                #     keywords_instances.append(keyword)
+                #
+                # archivo_inst.keywords.add(*keywords_instances)
+                # keywords_data = [{'name': keyword.name} for keyword in archivo_inst.keywords.all()]
+
                 data = {
                     'file_id': archivo_inst.id,
                     'file_name': archivo_inst.nombre,
@@ -104,9 +97,8 @@ class TransciptionApiView(APIView):
                     'file_url': archivo_inst.archivo.url,
                     'transcription': archivo_inst.transcription,
                     'resumen': archivo_inst.resumen,
-                    #'keywords': list(archivo_inst.keywords.all()),
-                    'keywords': keywords_data,
-                    
+                    'keywords': list(archivo_inst.keywords.all()),
+
                 }
 
                 return Response(data=data, status=status.HTTP_200_OK)
