@@ -57,7 +57,7 @@ class TransciptionApiView(APIView):
                 # # start
                 if es_video(file):
                     archivo_inst = conversion(file)
-                    # archivo_inst.transcription = transcripcion(archivo_inst.archivo.path)
+                    archivo_inst.transcription = transcripcion(archivo_inst.archivo.path)
                 else:
                     archivo_inst = Archivo.objects.create(archivo=file, nombre=file.name)
                     archivo_inst.transcription = transcripcion(archivo_inst.archivo.path)
