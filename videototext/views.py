@@ -1,4 +1,3 @@
-# from .IA_services import transcripcion
 import requests as fetch
 from django.shortcuts import render
 
