@@ -27,7 +27,7 @@ def upload_file(request):
                 'Content-Disposition': f'attachment;filename={file.name}'
             }
         )
-
+        
         data = response.json()
 
         # if es_video(file):
