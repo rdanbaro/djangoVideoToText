@@ -21,7 +21,7 @@ def upload_file(request):
                 'file': file
             },
             headers={
-                'Content-Type': 'application/json',
+                # 'Content-Type': 'application/json',
                 'Content-Disposition': f'attachment;filename={file.name}'
             }
         )

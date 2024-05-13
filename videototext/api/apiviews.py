@@ -1,23 +1,19 @@
-from django.conf import settings
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-# IA Services
-from videototext.IA_services import palabras_clave
-from videototext.IA_services import resumen
-from videototext.IA_services import transcripcion
 # serializadores
 from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
-# funciones utiles
-from videototext.funciones_utiles import conversion
-from videototext.funciones_utiles import es_video
 # modelos
 from ..models import Keywords, Archivo
+# IA Services
+from ..utils.IA_services import resumen, transcripcion, palabras_clave
+# funciones utiles
+from ..utils.media_utils import es_video, conversion
 
 
 class KeywordsApiView(viewsets.ModelViewSet):
@@ -47,34 +43,24 @@ class ArchivoApiView(viewsets.ModelViewSet):
     }
 )
 class TransciptionApiView(APIView):
-    parser_classes = (FileUploadParser,)
+    parser_classes = (MultiPartParser,)
 
     def post(self, request, format=None):
 
         try:
             if 'file' in request.FILES:
-                archivo_inst = Archivo()
 
                 file = request.FILES['file']
 
-                # guardando en la base de datos
-                archivo_inst.nombre = file.name
-                archivo_inst.archivo = file
-
-                archivo_inst.save()
-
-                # crea una url valida del fichero
-                url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
-
-                # validando que sea un audio y transcribiendolo,
-                # if esVideo se convierte y luego se transcribe else se transcribe directamente
-                # start
+                # # validando que sea un audio y transcribiendolo,
+                # # if esVideo se convierte y luego se transcribe else se transcribe directamente
+                # # start
                 if es_video(file):
-                    conversion(url_definitivo)
-
-                    archivo_inst.transcription = transcripcion(url_definitivo)
+                    archivo_inst = conversion(file)
+                    # archivo_inst.transcription = transcripcion(archivo_inst.archivo.path)
                 else:
-                    archivo_inst.transcription = transcripcion(url_definitivo)
+                    archivo_inst = Archivo.objects.create(archivo=file, nombre=file.name)
+                    archivo_inst.transcription = transcripcion(archivo_inst.archivo.path)
                 # end
 
                 # resumiendo la transcripcion del archivo
@@ -84,6 +70,7 @@ class TransciptionApiView(APIView):
                 # start
                 keywords_names = palabras_clave(archivo_inst.transcription)
 
+                # keywords_names = ['name1', 'name dos', 'name Tres']
                 keywords_instances = []
 
                 # comprobando si existe la palabra clave en la base de datos sino la crea
