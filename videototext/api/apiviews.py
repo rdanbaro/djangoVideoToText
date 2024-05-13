@@ -7,11 +7,13 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.conf import settings
+from videototext.IA_services import palabras_clave
 from videototext.funciones_utiles import conversion
 from videototext.funciones_utiles import es_video
 from django.core.files.storage import FileSystemStorage
 from videototext.IA_services import resumen
 from rest_framework.generics import ListCreateAPIView
+
 
 # serializadores
 from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
@@ -71,18 +73,18 @@ class TransciptionApiView(APIView):
                 
                 
                 url_definitivo = f'{settings.BASE_DIR}{archivo_inst.archivo.url}'
-                #if es_video(file):
-                #    conversion(url_definitivo)
-                #    #archivo_inst.save()
-                #    
-                #    archivo_inst.transcription = transcripcion(url_definitivo)
-                #else:
-                #    archivo_inst.transcription = transcripcion(url_definitivo)
+                if es_video(file):
+                    conversion(url_definitivo)
+                    #archivo_inst.save()
                     
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                else:
+                    archivo_inst.transcription = transcripcion(url_definitivo)
+                   
+            
+                archivo_inst.resumen = resumen(archivo_inst.transcription)
                 
-                #archivo_inst.resumen = resumen(archivo_inst.transcription)
-                
-                keywords_names = ['hola8', 'hola9', 'hola10']
+                keywords_names = palabras_clave(archivo_inst.transcription)
                 keywords_instances = []
             
                 for name in keywords_names:
