@@ -1,5 +1,5 @@
 import whisper
-import ollama
+#import ollama
 
 def transcripcion(url_file):
     model = whisper.load_model("base")
