@@ -11,9 +11,10 @@ from videototext.api.serializers import KeywordsSerializer, ArchivoSerializer
 # modelos
 from ..models import Keywords, Archivo
 # IA Services
-from ..utils.IA_services import resumen, transcripcion, palabras_clave
+#from ..utils.IA_services import resumen, transcripcion, palabras_clave
+from ..utils.IA_services import transcripcion
 # funciones utiles
-from ..utils.media_utils import es_video, conversion
+from ..utils.media_utils import es_video,es_audio, conversion
 
 
 class KeywordsApiView(viewsets.ModelViewSet):
@@ -58,25 +59,30 @@ class TransciptionApiView(APIView):
                 if es_video(file):
                     archivo_inst = conversion(file)
                     archivo_inst.transcription = transcripcion(archivo_inst.archivo.path)
-                else:
+                elif es_audio(file):
                     archivo_inst = Archivo.objects.create(archivo=file, nombre=file.name)
                     archivo_inst.transcription = transcripcion(archivo_inst.archivo.path)
+                else:
+                    archivo_inst = Archivo.objects.create(archivo=file, nombre=file.name)
+                    archivo_inst.url = None    
                 # end
 
                 # resumiendo la transcripcion del archivo
-                archivo_inst.resumen = resumen(archivo_inst.transcription)
-
+                #if archivo_inst.transcription is not None:
+                #   archivo_inst.resumen = resumen(archivo_inst.transcription)
+                #else:
+                #   archivo_inst.resumen ='Algo salió mal con la transcripción, intentalo otra vez.'  
                 # sacando las palabras claves de la transcripcion del archivo
-                # start
-                keywords_names = palabras_clave(archivo_inst.transcription)
+                #start
+                #keywords_names = palabras_clave(archivo_inst.transcription)
 
-                # keywords_names = ['name1', 'name dos', 'name Tres']
+                keywords_names = ['name1', 'name dos', 'name Tres']
                 keywords_instances = []
 
                 # comprobando si existe la palabra clave en la base de datos sino la crea
                 for name in keywords_names:
                     keyword = Keywords.objects.filter(name=name.capitalize()).first()
-
+#
                     if keyword is None:
                         keyword = Keywords.objects.create(name=name.capitalize())
                     keywords_instances.append(keyword)
@@ -95,6 +101,7 @@ class TransciptionApiView(APIView):
                     'transcription': archivo_inst.transcription,
                     'resumen': archivo_inst.resumen,
                     'keywords': keywords_data,
+                    #'keywords': keywords_data,
                 }
 
                 return Response(data=data, status=status.HTTP_200_OK)
