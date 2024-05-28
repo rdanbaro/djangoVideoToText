@@ -1,1 +1,1 @@
-web: gunicorn djangoVideoToText.wsgi
+web: python manage.py collectstatic && gunicorn djangoVideoToText.wsgi
