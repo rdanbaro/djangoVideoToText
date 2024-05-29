@@ -5,6 +5,7 @@ certifi==2024.2.2
 charset-normalizer==3.3.2
 decorator==4.4.2
 distro==1.9.0
+dj-database-url==2.2.0
 Django==5.0.6
 djangorestframework==3.15.1
 drf-yasg==1.21.7
@@ -45,6 +46,7 @@ openai-whisper @ git+https://github.com/openai/whisper.git@ba3f3cd54b0e5b8ce1ab3
 packaging==24.0
 pillow==10.3.0
 proglog==0.1.10
+psycopg2-binary==2.9.9
 pydantic==2.7.1
 pydantic_core==2.18.2
 pytz==2024.1
