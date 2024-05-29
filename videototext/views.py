@@ -8,8 +8,8 @@ def upload_file(request):
     if request.method == "POST" and request.FILES['file']:
         # Obteniendo la configuracion
         host, api_url = read_config()
-        API = f'http://{host}:{port}'
-        transcription_api_url = f'{API}/{api_url}'
+        #API = f'http://{host}:{port}'
+        transcription_api_url = f'{host}/{api_url}'
 
         # obteniendo el archivo
         file = request.FILES['file']
