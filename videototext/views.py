@@ -7,7 +7,7 @@ from videototext.utils.utils import read_config
 def upload_file(request):
     if request.method == "POST" and request.FILES['file']:
         # Obteniendo la configuracion
-        host, port, api_url = read_config()
+        host, api_url = read_config()
         API = f'http://{host}:{port}'
         transcription_api_url = f'{API}/{api_url}'
 
