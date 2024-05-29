@@ -7,16 +7,12 @@ def read_config(endpoint=None):
     config = configparser.ConfigParser()
     config.read(settings.BASE_DIR / 'videototext/config.ini')
 
-    # Lee los valores de las secciones
-    #host = config.get('HOST', 'hostname')
-    #port = config.getint('PORT', 'port_number')
-    
-    host = 'https://djangovideototext-production.up.railway.app/'
-    port = '6187'
-    
+    # Si estás usando un URL completo, no necesitas especificar el puerto por separado
+    host = 'https://djangovideototext-production.up.railway.app'
     api_url = config.get('URLS', endpoint if endpoint else 'transcription_app')
 
     if endpoint:
-        return api_url
+        return f'{host}/{api_url}'
 
-    return host, port, api_url
+    return host, api_url
+
