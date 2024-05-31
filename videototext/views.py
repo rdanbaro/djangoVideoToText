@@ -38,7 +38,7 @@ def upload_file(request):
             # 'uploaded_file_storage_name': data['file_storage_name'],
             'transcription': data['transcription'],
             'resumen': data['resumen'],
-            'keywords': data['keywords'],
+            #'keywords': data['keywords'],
         })
 
     return render(request, 'upload-file.html')
