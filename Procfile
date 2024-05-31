@@ -1,1 +1,1 @@
-web: python manage.py collectstatic && gunicorn --timeout 120 djangoVideoToText.wsgi
+web: ./start.sh
