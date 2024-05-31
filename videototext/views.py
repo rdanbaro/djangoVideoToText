@@ -10,7 +10,7 @@ def upload_file(request):
         host, api_url = read_config()
         #API = f'http://{host}:{port}'
         transcription_api_url = f'{host}/{api_url}'
-
+        print('QUE LINK ME DA:', transcription_api_url)
         # obteniendo el archivo
         file = request.FILES['file']
 
