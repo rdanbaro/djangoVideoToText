@@ -137,4 +137,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-CSRF_TRUSTED_ORIGINS = ['http://*', 'https://djangovideototext-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['http://*', 'https://djangovideototext-production.up.railway.app', 'https://djangovideototext-production.up.railway.app/api/v1/transcription-app']
